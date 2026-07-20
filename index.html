@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Formulir|Portal Resmi Disdik Prov. NTT</title>
+  
+  <!-- SEO & Mobile Specs -->
+  <meta name="description" content="Sistem Pendaftaran & Pengumpulan Berkas Digital Dinas Pendidikan">
+  <meta name="theme-color" content="#002B49">
+  <link rel="apple-touch-icon" href="https://img.icons8.com/color/192/government-building.png">
+
+  <!-- PWA Manifest Data URI -->
+  <link class="pwa-manifest" rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22E-Form%20Disdik%20Pro%22%2C%22short_name%22%3A%22DisdikForm%22%2C%22description%22%3A%22Sistem%20Pendaftaran%20%26%20Pengumpulan%20Berkas%20Digital%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F8F9FA%22%2C%22theme_color%22%3A%22%23002B49%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimg.icons8.com%2Fcolor%2F192%2Fgovernment-building.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fimg.icons8.com%2Fcolor%2F512%2Fgovernment-building.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+
+  <!-- Style Dependencies -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Times+New+Roman&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary: #002B49;
+      --color-primary-dark: #001f35;
+      --color-accent: #FFC107;
+      --color-accent-hover: #E0A800;
+      --color-royal: #0D6EFD;
+      --color-success: #198754;
+      --color-danger: #DC3545;
+      --color-warning: #FD7E14;
+      --color-bg-light: #F8F9FA;
+      --font-ui: 'Inter', sans-serif;
+      --font-kop: 'Times New Roman', Times, serif;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background-color: var(--color-bg-light);
+      color: #333333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphism Styles */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 43, 73, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 43, 73, 0.06);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      box-shadow: 0 12px 40px 0 rgba(0, 43, 73, 0.1);
+    }
+
+    /* Desktop Top Horizontal Navigation Menu Style (Wide Workspace) */
+    @media (min-width: 992px) {
+      .app-header {
+        position: sticky;
+        top: 0;
+        z-index: 1040;
+        border-bottom: 4px solid var(--color-accent);
+      }
+      .app-main {
+        margin-left: 0;
+        flex: 1;
+        width: 100%;
+      }
+      .mobile-nav-bar {
+        display: none !important;
+      }
+      .nav-link-horizontal {
+        font-weight: 500;
+        transition: all 0.2s ease;
+        border-radius: 6px;
+        color: #ffffff;
+        text-decoration: none;
+      }
+      .nav-link-horizontal:hover, .nav-link-horizontal.active {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: var(--color-accent) !important;
+      }
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    @media (max-width: 991.98px) {
+      .app-header {
+        display: none !important;
+      }
+      .app-main {
+        margin-left: 0;
+        padding-bottom: 80px;
+        flex: 1;
+      }
+      .mobile-nav-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65px;
+        background: rgba(0, 43, 73, 0.95);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1030;
+        border-top: 3px solid var(--color-accent);
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+      }
+      .mobile-nav-item {
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-size: 11px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: 0.2s;
+      }
+      .mobile-nav-item i {
+        font-size: 20px;
+        margin-bottom: 2px;
+      }
+      .mobile-nav-item.active {
+        color: var(--color-accent) !important;
+      }
+    }
+
+    /* Government Kop Surat Format Styles */
+    .kop-container {
+      font-family: var(--font-kop);
+      border-bottom: 4px double #000;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      color: #000;
+    }
+    .kop-title-huge {
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .kop-title-large {
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .kop-subtitle {
+      font-size: 12px;
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    /* Live Countdown Display */
+    .countdown-pill {
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 50px;
+      padding: 0.35rem 0.75rem;
+    }
+
+    /* Floating Announcements */
+    .floating-announcement-banner {
+      background-color: var(--color-danger);
+      color: #fff;
+      font-weight: bold;
+      z-index: 1050;
+      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.35);
+    }
+
+    /* Running Text (Ticker) Styles */
+    .news-ticker {
+      background-color: var(--color-primary-dark);
+      color: #fff;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+    .news-ticker-wrap {
+      display: inline-block;
+      animation: ticker-scrolling 30s linear infinite;
+    }
+    @keyframes ticker-scrolling {
+      0% { transform: translate3d(100%, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    /* Drag-and-Drop Layout Grid Previews */
+    .canvas-dropzone {
+      border: 2px dashed rgba(0, 43, 73, 0.2);
+      border-radius: 12px;
+      padding: 24px;
+      min-height: 450px;
+      background-color: #ffffff;
+    }
+    .canvas-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      padding: 16px;
+      position: relative;
+    }
+    .canvas-item:hover {
+      border-color: var(--color-royal);
+    }
+    .canvas-actions {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      gap: 4px;
+    }
+
+    /* Hidden Sections Engine */
+    .app-section {
+      display: none;
+    }
+    .app-section.active {
+      display: block;
+    }
+
+    /* Interactive UI Utilities */
+    .pointer { cursor: pointer; }
+    .text-navy { color: var(--color-primary) !important; }
+    .bg-navy { background-color: var(--color-primary) !important; }
+    .btn-navy {
+      background-color: var(--color-primary);
+      color: #fff;
+      transition: all 0.2s;
+    }
+    .btn-navy:hover {
+      background-color: var(--color-primary-dark);
+      color: var(--color-accent);
+    }
+    .border-accent {
+      border-color: var(--color-accent) !important;
+    }
+
+    /* Print styling rules for PDF generation */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-area, #print-area * {
+        visibility: visible;
+      }
+      #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #fff;
+        padding: 0;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Announcement Banner (Dismissible) -->
+  <div id="global-announcement" class="floating-announcement-banner d-none py-2 px-3 position-sticky top-0 text-center">
+    <div class="d-flex justify-content-between align-items-center container-fluid">
+      <div class="flex-grow-1"><i class="fa-solid fa-bullhorn me-2"></i> <span id="announcement-text">Pengumuman Terkini Sistem E-Form Dinas Pendidikan</span></div>
+      <button type="button" class="btn-close btn-close-white btn-sm" onclick="hideGlobalAnnouncement()"></button>
+    </div>
+  </div>
+
+  <!-- Dynamic News Running Ticker -->
+  <div class="news-ticker" id="ticker-bar">
+    <div class="news-ticker-wrap" id="ticker-content">
+      Selamat datang di E-Form Disdik Prov NTT - Pendaftaran dan Pengumpulan Dokumen Resmi Dinas Pendidikan | Harap perhatikan batas pengiriman form yang sedang berjalan.
+    </div>
+  </div>
+
+  <!-- DESKTOP TOP HORIZONTAL HEADER (Replaces Vertical Sidebar) -->
+  <header class="app-header bg-navy text-white px-4 py-3 shadow-sm">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-3">
+        <!-- Logo Dinas yang tersinkronisasi dinamis -->
+        <img id="header-logo-img" src="https://img.icons8.com/color/48/government-building.png" alt="Logo Disdik" style="width: 40px; height: 40px; object-fit: contain;" onerror="this.onerror=null; this.src='https://placehold.co/48x48/002B49/FFFFFF?text=DISDIK';">
+        <div>
+          <h1 class="h5 mb-0 text-white fw-bold" style="letter-spacing: 0.5px;">E-FORM DISDIK PROV NTT</h1>
+          <small class="text-warning text-uppercase fw-semibold" style="font-size: 10px;">Portal Resmi Dinas Pendidikan Prov NTT</small>
+        </div>
+      </div>
+      
+      <!-- Horizontal Navigation Menu Links -->
+      <nav class="d-flex align-items-center gap-2">
+        <a class="nav-link-horizontal py-2 px-3 pointer active d-flex align-items-center gap-2" id="nav-home-btn" onclick="navigateTo('page-home')">
+          <i class="fa-solid fa-house text-warning"></i> Beranda Publik
+        </a>
+        <a class="nav-link-horizontal py-2 px-3 pointer d-flex align-items-center gap-2" id="nav-dashboard-btn" onclick="navigateTo('page-dashboard')">
+          <i class="fa-solid fa-chart-line text-warning"></i> Dashboard Admin
+        </a>
+        <a class="nav-link-horizontal py-2 px-3 pointer d-flex align-items-center gap-2" id="nav-login-btn" onclick="navigateTo('page-login')">
+          <i class="fa-solid fa-lock text-warning"></i> Login Admin
+        </a>
+      </nav>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2 border-start border-white-50 ps-3">
+          <!-- Indikator Integrasi Database yang diperbaiki agar tidak tumpang tindih -->
+          <span style="font-size: 11px; font-weight: 500;" id="db-status-badge">
+            <!-- Disuntikkan dinamis via JavaScript -->
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Shell Wrapper -->
+  <div class="d-flex flex-column min-vh-100">
+
+    <!-- MOBILE NAVIGATION (BOTTOM BAR) -->
+    <nav class="mobile-nav-bar">
+      <a class="mobile-nav-item active" id="m-nav-home" onclick="navigateTo('page-home')">
+        <i class="fa-solid fa-house"></i>Beranda
+      </a>
+      <a class="mobile-nav-item" id="m-nav-dashboard" onclick="navigateTo('page-dashboard')">
+        <i class="fa-solid fa-chart-line"></i>Dashboard
+      </a>
+      <a class="mobile-nav-item" id="m-nav-login" onclick="navigateTo('page-login')">
+        <i class="fa-solid fa-user-shield"></i>Akses Admin
+      </a>
+    </nav>
+
+    <!-- MAIN CORE CONTAINER -->
+    <main class="app-main p-3 p-lg-4">
+
+      <!-- ================= PAGE 1: PUBLIC LANDING PAGE ================= -->
+      <section id="page-home" class="app-section active">
+        <!-- Hero Banner -->
+        <div class="glass-card p-4 p-lg-5 mb-4 text-white text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);">
+          <div class="position-relative z-index-1">
+            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">SISTEM INTEGRASI KEDINASAN</span>
+            <h2 class="display-6 fw-bold">E-Form Disdik Prov NTT</h2>
+            <p class="lead text-white-50 max-w-700 mx-auto">Portal Pengisian Formulir Resmi dan Pengumpulan Berkas Digital di bawah naungan Dinas Pendidikan.</p>
+            <div class="row justify-content-center mt-4">
+              <div class="col-md-8 col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                  <input type="text" id="public-search-form" class="form-control border-0 py-2" placeholder="Cari Formulir Aktif (cth: Sertifikasi, Dapodik, Beasiswa)..." onkeyup="filterPublicForms()">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats Banner -->
+        <div class="row g-3 mb-4 text-center">
+          <div class="col-md-4">
+            <div class="glass-card p-3">
+              <h3 class="h4 text-navy fw-bold mb-0" id="stat-active-forms">0</h3>
+              <small class="text-muted text-uppercase fw-semibold">Formulir Aktif</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="glass-card p-3">
+              <h3 class="h4 text-success fw-bold mb-0" id="stat-total-submissions">0</h3>
+              <small class="text-muted text-uppercase fw-semibold">Total Berkas Terkumpul</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="glass-card p-3">
+              <h3 class="h4 text-royal fw-bold mb-0">Terintegrasi</h3>
+              <small class="text-muted text-uppercase fw-semibold">Google Drive Storage</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Category Tabs -->
+        <div class="mb-4">
+          <ul class="nav nav-pills gap-2 justify-content-center" id="category-tabs" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active px-4 py-2" data-category="SEMUA" onclick="filterCategory('SEMUA')">Semua Layanan</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-4 py-2" data-category="GURU" onclick="filterCategory('GURU')">Kependidikan / Guru</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-4 py-2" data-category="SEKOLAH" onclick="filterCategory('SEKOLAH')">Operator Sekolah</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-4 py-2" data-category="SISWA" onclick="filterCategory('SISWA')">Siswa / Siswi</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Public Forms Display Grid -->
+        <div class="row g-4" id="public-forms-grid">
+          <!-- Dynamically populated via JavaScript -->
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="glass-card p-4 mt-5">
+          <h4 class="text-navy fw-bold mb-4 text-center"><i class="fa-solid fa-circle-question me-2"></i>Pertanyaan Umum (FAQ)</h4>
+          <div class="accordion accordion-flush" id="faqAccordion">
+            <div class="accordion-item bg-transparent">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-bold text-navy" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1">
+                  Format berkas apa saja yang didukung untuk diunggah?
+                </button>
+              </h2>
+              <div id="faq-1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                  Secara umum, sistem mendukung unggahan berkas dengan format PDF, DOCX, XLSX, JPG, dan PNG dengan ukuran maksimal yang telah disesuaikan oleh administrator (maksimal 5MB per berkas).
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item bg-transparent">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-bold text-navy" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2">
+                  Bagaimana jika saya terlambat mengumpulkan berkas melewati deadline?
+                </button>
+              </h2>
+              <div id="faq-2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                  Setiap formulir memiliki sistem penghitung waktu mundur otomatis (Countdown). Jika sisa waktu telah habis, formulir akan otomatis terkunci dan tidak dapat menerima pengiriman berkas lagi. Silakan hubungi admin terkait.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PAGE 2: LOGIN ADMIN ================= -->
+      <section id="page-login" class="app-section">
+        <div class="row justify-content-center py-5">
+          <div class="col-md-6 col-lg-5">
+            <div class="glass-card p-4">
+              <div class="text-center mb-4">
+                <img id="login-logo-img" src="https://img.icons8.com/color/96/government-building.png" alt="Logo Dinas" class="mb-3" style="width: 70px;" onerror="this.onerror=null; this.src='https://placehold.co/96x96/002B49/FFFFFF?text=DISDIK';">
+                <h3 class="fw-bold text-navy">Akses Operator & Admin</h3>
+                <p class="text-muted small">Kelola template, data respon pendaftaran, dan konfigurasi Google Drive.</p>
+              </div>
+              <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Email Kredensial / Akun Operator</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                    <input type="email" id="login-email" class="form-control" required placeholder="operator@disdik.go.id">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Kata Sandi</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+                    <input type="password" id="login-password" class="form-control" required placeholder="********">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-navy w-100 py-2.5 fw-bold mb-3">MASUK KE DASHBOARD</button>
+                <div class="text-center text-muted" style="font-size: 11px;">
+                  Sistem Autentikasi operator terenkripsi secara real-time.
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PAGE 3: RESPONDER PORTAL (Isi Form) ================= -->
+      <section id="page-form-view" class="app-section">
+        <div class="mb-3">
+          <button class="btn btn-outline-secondary btn-sm" onclick="navigateTo('page-home')">
+            <i class="fa-solid fa-arrow-left me-2"></i>Kembali ke Beranda
+          </button>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-xl-9">
+            <div class="glass-card p-4 p-md-5 bg-white shadow-lg border-0" id="form-fill-container">
+              <!-- Kop Surat Element inside live forms -->
+              <div id="form-kop-preview"></div>
+
+              <!-- Main Heading of Form -->
+              <div class="d-flex justify-content-between align-items-start mt-3 mb-4 flex-wrap gap-2">
+                <div>
+                  <h3 class="fw-bold text-navy" id="form-fill-title">Memuat Form...</h3>
+                  <p class="text-muted mb-0" id="form-fill-desc">Mohon tunggu sebentar.</p>
+                </div>
+                <div class="countdown-pill bg-danger text-white d-flex align-items-center gap-2" id="form-fill-timer">
+                  <i class="fa-solid fa-clock"></i> <span id="form-fill-timer-value">Checking...</span>
+                </div>
+              </div>
+
+              <!-- Input Area Generated Dynamically -->
+              <form id="form-responder-interactive" onsubmit="handleResponderSubmit(event)">
+                <input type="hidden" id="form-responder-id">
+                <div class="row g-4" id="form-render-canvas">
+                  <!-- Dynamic fields land here -->
+                </div>
+                <hr class="my-4">
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-light" onclick="navigateTo('page-home')">Batalkan</button>
+                  <button type="submit" class="btn btn-navy px-4 py-2" id="btn-submit-form">Kirim Berkas Sekarang</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PAGE 4: ADMIN DASHBOARD ================= -->
+      <section id="page-dashboard" class="app-section">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="fw-bold text-navy">Dashboard Administrasi</h2>
+            <p class="text-muted mb-0">Manajemen Pusat Formulir, Verifikasi Berkas, Ekspor Excel/PDF, & Integrasi Google Drive</p>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-navy btn-sm" onclick="showFormBuilderModal()">
+              <i class="fa-solid fa-plus me-1"></i> Buat Form Baru
+            </button>
+            <button class="btn btn-outline-danger btn-sm" onclick="handleLogout()">
+              <i class="fa-solid fa-right-from-bracket me-1"></i> Log Out
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Summary row -->
+        <div class="row g-3 mb-4 text-white">
+          <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3" style="background-color: var(--color-primary);">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small text-white-50">Formulir Diterbitkan</span>
+                <i class="fa-solid fa-file-signature text-warning fs-5"></i>
+              </div>
+              <h3 class="fw-bold mb-0" id="dash-kpi-forms">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3" style="background-color: var(--color-royal);">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small text-white-50">Berkas Pengajuan</span>
+                <i class="fa-solid fa-folder-open text-warning fs-5"></i>
+              </div>
+              <h3 class="fw-bold mb-0" id="dash-kpi-submissions">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3" style="background-color: var(--color-success);">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small text-white-50">Terverifikasi Sesuai</span>
+                <i class="fa-solid fa-circle-check text-warning fs-5"></i>
+              </div>
+              <h3 class="fw-bold mb-0" id="dash-kpi-approved">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="p-3 rounded-3" style="background-color: var(--color-warning);">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small text-white-50">Menunggu Verifikasi</span>
+                <i class="fa-solid fa-hourglass-half text-warning fs-5"></i>
+              </div>
+              <h3 class="fw-bold mb-0" id="dash-kpi-pending">0</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs Layout for Dashboard Management -->
+        <ul class="nav nav-tabs mb-4" id="dashboard-tabs" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active fw-bold text-navy" id="tab-forms" data-bs-toggle="tab" data-bs-target="#tab-content-forms">
+              <i class="fa-solid fa-gears me-1"></i> Manajemen Formulir
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold text-navy" id="tab-submissions" data-bs-toggle="tab" data-bs-target="#tab-content-submissions" onclick="loadSubmissionsTable()">
+              <i class="fa-solid fa-file-invoice me-1"></i> Pengajuan Masuk
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold text-navy" id="tab-analytics" data-bs-toggle="tab" data-bs-target="#tab-content-analytics" onclick="initDashboardAnalytics()">
+              <i class="fa-solid fa-chart-pie me-1"></i> Monitoring & Grafik
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold text-navy" id="tab-settings" data-bs-toggle="tab" data-bs-target="#tab-content-settings">
+              <i class="fa-solid fa-sliders me-1"></i> Konfigurasi Portal & GDrive
+            </button>
+          </li>
+        </ul>
+
+        <!-- Tabs Panels -->
+        <div class="tab-content" id="dashboard-tab-content">
+          
+          <!-- PANEL A: MANAJEMEN FORMULIR -->
+          <div class="tab-pane fade show active" id="tab-content-forms">
+            <div class="glass-card p-3 table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light text-navy">
+                  <tr>
+                    <th>Judul Formulir</th>
+                    <th>Kategori</th>
+                    <th>Batas Waktu (Deadline)</th>
+                    <th>Jumlah Berkas</th>
+                    <th>Integrasi GDrive</th>
+                    <th>Status</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-forms-table-body">
+                  <!-- Dynamically populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PANEL B: PENGAJUAN MASUK / RESPONSE VERIFICATION -->
+          <div class="tab-pane fade" id="tab-content-submissions">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <div class="d-flex gap-2">
+                <select id="filter-submission-form" class="form-select form-select-sm" onchange="filterSubmissions()" style="max-width: 250px;">
+                  <option value="ALL">Semua Formulir</option>
+                </select>
+                <select id="filter-submission-status" class="form-select form-select-sm" onchange="filterSubmissions()" style="max-width: 180px;">
+                  <option value="ALL">Semua Status</option>
+                  <option value="PENDING">Menunggu Verifikasi</option>
+                  <option value="VERIFIED">Terverifikasi Sesuai</option>
+                  <option value="REVISION">Perlu Revisi</option>
+                  <option value="REJECTED">Ditolak</option>
+                </select>
+              </div>
+              <button class="btn btn-success btn-sm" onclick="exportSubmissionsToExcel()">
+                <i class="fa-solid fa-file-excel me-1"></i> Ekspor Excel (.xlsx)
+              </button>
+            </div>
+            <div class="glass-card p-3 table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light text-navy">
+                  <tr>
+                    <th>Tanggal Masuk</th>
+                    <th>Nama Responden</th>
+                    <th>Formulir</th>
+                    <th>Berkas Upload</th>
+                    <th>Status Verifikasi</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-submissions-table-body">
+                  <!-- Dynamic Submission responses -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PANEL C: MONITORING & ANALYTICS -->
+          <div class="tab-pane fade" id="tab-content-analytics">
+            <div class="row g-4">
+              <div class="col-lg-6">
+                <div class="glass-card p-4">
+                  <h5 class="fw-bold text-navy mb-3">Tren Pendaftaran Harian</h5>
+                  <div style="height: 250px;"><canvas id="chart-submissions-trend"></canvas></div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="glass-card p-4">
+                  <h5 class="fw-bold text-navy mb-3">Persentase Verifikasi Berkas</h5>
+                  <div style="height: 250px; display: flex; justify-content: center;"><canvas id="chart-verification-doughnut"></canvas></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL D: KOP SURAT & FOOTER CRUD -->
+          <div class="tab-pane fade" id="tab-content-settings">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                  <h5 class="fw-bold text-navy mb-3"><i class="fa-solid fa-stamp me-2"></i>Konfigurasi Kop Surat Dinas</h5>
+                  <form id="setting-kop-form" onsubmit="saveKopSurat(event)">
+                    <div class="mb-3">
+                      <label class="form-label font-bold">Garis Atas Utama (Pemerintahan)</label>
+                      <input type="text" id="kop-org-main" class="form-control" required placeholder="PEMERINTAH KOTA BATAM">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label font-bold">Garis Kedua (Lembaga/Dinas)</label>
+                      <input type="text" id="kop-org-sub" class="form-control" required placeholder="DINAS PENDIDIKAN">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label font-bold">Sub-Header Alamat Lengkap & Telp</label>
+                      <textarea id="kop-alamat" class="form-control" rows="3" required placeholder="Jl. Pendidikan Utama No. 45 Telp (0311) 789456"></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label font-bold">URL Logo Dinas Pendidikan</label>
+                      <input type="url" id="kop-logo-url" class="form-control" required placeholder="https://img.icons8.com/color/96/government-building.png">
+                    </div>
+                    <button type="submit" class="btn btn-navy">Perbarui Template Kop Surat</button>
+                  </form>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <!-- Google Drive API Integration config -->
+                <div class="glass-card p-4 mb-4">
+                  <h5 class="fw-bold text-navy mb-3"><i class="fa-brands fa-google-drive me-2 text-success"></i>Integrasi Google Drive</h5>
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold">Google Apps Script Web App URL</label>
+                    <input type="url" id="set-gas-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+                    <div class="form-text text-muted" style="font-size: 11px;">
+                      Masukkan tautan Apps Script Web App pendukung untuk mengaktifkan otomatisasi pembuatan folder & upload langsung ke Google Drive.
+                    </div>
+                  </div>
+                  <div class="form-check form-switch mb-3 text-start">
+                    <input class="form-check-input" type="checkbox" role="switch" id="set-gdrive-enabled">
+                    <label class="form-check-label text-navy fw-semibold" for="set-gdrive-enabled">Aktifkan Penyimpanan Otomatis Google Drive</label>
+                  </div>
+                </div>
+
+                <div class="glass-card p-4">
+                  <h5 class="fw-bold text-navy mb-3"><i class="fa-solid fa-window-restore me-2"></i>Running Announcement & Warning Alert</h5>
+                  <form id="setting-news-form" onsubmit="saveGlobalSettings(event)">
+                    <div class="mb-3">
+                      <label class="form-label font-bold">Pengumuman Berjalan Utama (News Ticker)</label>
+                      <textarea id="set-ticker-text" class="form-control" rows="3" required placeholder="Tuliskan berita kedinasan penting..."></textarea>
+                    </div>
+                    <div class="mb-3 text-start">
+                      <label class="form-label font-bold">Teks Pengumuman Melayang (Modal / Warning Alert Banner)</label>
+                      <input type="text" id="set-announcement-text" class="form-control" required placeholder="Sistem E-Form Disdik Pro dalam mode pemeliharaan">
+                    </div>
+                    <div class="mb-3 form-check form-switch text-start">
+                      <input class="form-check-input" type="checkbox" role="switch" id="set-announcement-active">
+                      <label class="form-check-label text-navy fw-semibold" for="set-announcement-active">Tampilkan Banner Pengumuman Melayang</label>
+                    </div>
+                    <button type="submit" class="btn btn-navy">Perbarui Konfigurasi Sistem</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Dynamic Footer Section -->
+  <footer class="bg-navy text-white text-center py-4 border-top border-accent mt-auto shadow-lg">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-4 text-md-start">
+          <h5 class="fw-bold mb-1">E-Form Disdik Pro</h5>
+          <p class="small text-white-50 mb-0">Portal Pendaftaran & Pengumpulan Berkas Digital</p>
+        </div>
+        <div class="col-md-4 py-3 py-md-0">
+          <div class="d-flex justify-content-center gap-3">
+            <a href="#" class="text-white-50 hover-text-warning"><i class="fa-brands fa-facebook fs-5"></i></a>
+            <a href="#" class="text-white-50 hover-text-warning"><i class="fa-brands fa-instagram fs-5"></i></a>
+            <a href="#" class="text-white-50 hover-text-warning"><i class="fa-brands fa-twitter fs-5"></i></a>
+            <a href="#" class="text-white-50 hover-text-warning"><i class="fa-solid fa-globe fs-5"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <small class="text-white-50" id="dynamic-footer-copyright">&copy; 2026 Dinas Pendidikan. Semua Hak Cipta Dilindungi.</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= DIALOG MODAL: DYNAMIC FORM BUILDER ================= -->
+  <div class="modal fade" id="modalFormBuilder" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-navy text-white">
+          <h5 class="modal-title fw-bold" id="builder-modal-title"><i class="fa-solid fa-cubes me-2"></i>Visual Form Layout Builder Engine</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body bg-light">
+          <div class="row g-4">
+            
+            <!-- Side Palette Panel -->
+            <div class="col-lg-4">
+              <div class="glass-card p-3 mb-3 bg-white">
+                <h6 class="fw-bold text-navy mb-3">1. Properti Informasi Formulir</h6>
+                <div class="mb-3">
+                  <label class="form-label small font-bold">Judul Formulir</label>
+                  <input type="text" id="build-form-title" class="form-control" placeholder="Nama Layanan / Pendaftaran..." required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small font-bold">Deskripsi Singkat</label>
+                  <textarea id="build-form-desc" class="form-control" rows="2" placeholder="Panduan pengisian singkat..."></textarea>
+                </div>
+                <div class="row g-2">
+                  <div class="col-6">
+                    <label class="form-label small font-bold">Kategori</label>
+                    <select id="build-form-category" class="form-select">
+                      <option value="GURU">Kependidikan (Guru)</option>
+                      <option value="SEKOLAH">Operator Sekolah</option>
+                      <option value="SISWA">Siswa / Siswi</option>
+                      <option value="UMUM">Layanan Umum</option>
+                    </select>
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small font-bold">Batas Tanggal</label>
+                    <input type="datetime-local" id="build-form-deadline" class="form-control" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="glass-card p-3 bg-white">
+                <h6 class="fw-bold text-navy mb-3">2. Tambahkan Elemen Input</h6>
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-outline-secondary btn-sm text-start" onclick="addNewField('text')"><i class="fa-solid fa-font me-2"></i>Teks Singkat (Short Text)</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm text-start" onclick="addNewField('textarea')"><i class="fa-solid fa-paragraph me-2"></i>Paragraf (Long Text)</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm text-start" onclick="addNewField('number')"><i class="fa-solid fa-calculator me-2"></i>Angka / ID (NIP, NISN)</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm text-start" onclick="addNewField('dropdown')"><i class="fa-solid fa-list-check me-2"></i>Pilihan Dropdown</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm text-start" onclick="addNewField('file')"><i class="fa-solid fa-cloud-arrow-up me-2"></i>Unggah Berkas/File (PDF/Gambar)</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm text-start" onclick="addNewField('date')"><i class="fa-solid fa-calendar-days me-2"></i>Pemilih Tanggal</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Working Canvas -->
+            <div class="col-lg-8">
+              <div class="canvas-dropzone shadow-sm" id="builder-working-canvas">
+                <div class="text-center py-5 text-muted" id="canvas-empty-state">
+                  <i class="fa-solid fa-circle-plus fs-1 mb-3 text-secondary"></i>
+                  <h6>Working Canvas Fleksibel</h6>
+                  <p class="small">Klik tombol di palet sebelah kiri untuk menambahkan elemen input di sini secara berurutan.</p>
+                </div>
+                <!-- Interactive Canvas Elements are drawn dynamically here -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer bg-white">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batalkan</button>
+          <button type="button" class="btn btn-navy px-4" onclick="saveBuiltForm()"><i class="fa-solid fa-floppy-disk me-1"></i> Publikasikan Form</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DIALOG MODAL: DETAIL PENGAJUAN & VERIFIKASI ================= -->
+  <div class="modal fade" id="modalVerifySubmission" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-navy text-white">
+          <h5 class="modal-title fw-bold"><i class="fa-solid fa-magnifying-glass-chart me-2"></i>Review Validasi Berkas Responden</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="verification-modal-body">
+          <!-- Dynamically generated detail verification elements -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PRINTING / PDF AREA ================= -->
+  <div id="print-area" class="d-none">
+    <div class="p-5" style="max-width: 800px; margin: 0 auto; border: 1px solid #ccc; background:#fff;">
+      <div id="print-kop"></div>
+      <div class="text-center my-4">
+        <h4 class="fw-bold font-serif" style="text-decoration: underline;">BUKTI RESMI PENGUMPULAN BERKAS DIGITAL</h4>
+        <small class="text-muted">ID Registrasi: <span id="print-id-registrasi">N/A</span></small>
+      </div>
+      <p class="mb-4">Sistem Dokumentasi Dinas Pendidikan menyatakan bahwa responden di bawah ini telah berhasil melakukan pengisian data pendaftaran secara valid:</p>
+      
+      <table class="table table-bordered align-middle mb-4">
+        <tbody id="print-fields-table">
+          <!-- Populated printed rows -->
+        </tbody>
+      </table>
+
+      <div class="row mt-5">
+        <div class="col-7 text-start">
+          <small class="text-muted">Kode Validasi Keaslian Sistem:</small>
+          <div class="d-flex align-items-center gap-2 mt-2">
+            <img src="https://img.icons8.com/color/64/barcode.png" alt="Barcode" style="height: 40px;">
+            <div class="text-xs text-muted font-monospace" style="font-size: 10px;">E-FORM/VERIFIED/DISDIK/2026</div>
+          </div>
+        </div>
+        <div class="col-5 text-center">
+          <p class="mb-0 small" id="print-tanggal-ttd">Kota Batam, 2026</p>
+          <p class="fw-bold small mb-5">Sistem Pengumpul Berkas Digital</p>
+          <hr style="border-top: 1px solid #000; width: 80%; margin: 0 auto;">
+          <small class="text-muted">Verifikasi Validasi Otomatis</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript Core Library Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Core App Logic Javascript Implementation -->
+  <script>
+    // Local memory data structures
+    let localDB = {
+      forms: [],
+      submissions: [],
+      announcements: {
+        tickerText: "Selamat datang di E-Form Disdik Pro - Hub Pendaftaran dan Pengumpulan Dokumen Resmi Dinas Pendidikan | Harap perhatikan batas pengiriman form yang sedang berjalan.",
+        announcementText: "Sistem E-Form Disdik Pro siap digunakan untuk pengumpulan berkas resmi.",
+        announcementActive: false
+      },
+      kopSurat: {
+        orgMain: "PEMERINTAH KOTA BATAM",
+        orgSub: "DINAS PENDIDIKAN",
+        alamat: "Jl. Pendidikan Utama No. 45 Kompleks Pemerintahan Terpadu, Telp. (0778) 456789 Fax. 456790 Batam 29400",
+        logoUrl: "https://img.icons8.com/color/96/government-building.png"
+      },
+      gdriveSettings: {
+        enabled: false,
+        gasUrl: "https://script.google.com/macros/s/AKfycbzwtPTRfDawXJ2IToa35ZP85ss4czWSqp74pnwJJkK1N99y2nuj5cEYvhIoPMQ1i93nEg/exec"
+      },
+      activeUser: null,
+      customFields: []
+    };
+
+    // Auto Setup - PRODUCTION VERSION: Database starts clean & empty
+    function autoSetupDatabase() {
+      const stored = localStorage.getItem('eform_disdik_db');
+      
+      const defaultDB = {
+        forms: [],
+        submissions: [],
+        announcements: {
+          tickerText: "Selamat datang di E-Form Disdik Pro - Hub Pendaftaran dan Pengumpulan Dokumen Resmi Dinas Pendidikan | Harap perhatikan batas pengiriman form yang sedang berjalan.",
+          announcementText: "Sistem E-Form Disdik Pro siap digunakan untuk pengumpulan berkas resmi.",
+          announcementActive: false
+        },
+        kopSurat: {
+          orgMain: "PEMERINTAH KOTA BATAM",
+          orgSub: "DINAS PENDIDIKAN",
+          alamat: "Jl. Pendidikan Utama No. 45 Kompleks Pemerintahan Terpadu, Telp. (0778) 456789 Fax. 456790 Batam 29400",
+          logoUrl: "https://img.icons8.com/color/96/government-building.png"
+        },
+        gdriveSettings: {
+          enabled: false,
+          gasUrl: ""
+        },
+        activeUser: null,
+        customFields: []
+      };
+
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          // Penggabungan skema database aman untuk mencegah kehilangan variabel integrasi gdrive pada update lama
+          localDB = {
+            ...defaultDB,
+            ...parsed,
+            announcements: { ...defaultDB.announcements, ...(parsed.announcements || {}) },
+            kopSurat: { ...defaultDB.kopSurat, ...(parsed.kopSurat || {}) },
+            gdriveSettings: { ...defaultDB.gdriveSettings, ...(parsed.gdriveSettings || {}) },
+            forms: parsed.forms || [],
+            submissions: parsed.submissions || []
+          };
+        } catch (e) {
+          console.error("Gagal parsing local storage, mereset ke default:", e);
+          localDB = defaultDB;
+        }
+      } else {
+        localDB = defaultDB;
+      }
+
+      saveToLocalStorage();
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem('eform_disdik_db', JSON.stringify(localDB));
+    }
+
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE_NAME = 'disdik-pro-v1';
+          const ASSETS = [
+            '/',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+            'https://cdn.jsdelivr.net/npm/sweetalert2@11'
+          ];
+
+          self.addEventListener('install', (e) => {
+            e.waitUntil(
+              caches.open(CACHE_NAME).then((cache) => {
+                return cache.addAll(ASSETS);
+              })
+            );
+          });
+
+          self.addEventListener('fetch', (e) => {
+            e.respondWith(
+              caches.match(e.request).then((cachedResponse) => {
+                return cachedResponse || fetch(e.request);
+              })
+            );
+          });
+        `;
+
+        try {
+          const blob = new Blob([swCode], { type: 'application/javascript' });
+          const swUrl = URL.createObjectURL(blob);
+          navigator.serviceWorker.register(swUrl)
+            .then(reg => console.log('PWA Service Worker registered.'))
+            .catch(err => console.warn('Service Worker registration skipped:', err));
+        } catch (e) {
+          console.warn('Failed to build Service Worker blob:', e);
+        }
+      }
+    }
+
+    function applySettingsAndMetadata() {
+      // 1. Ticker text
+      const tickerContent = document.getElementById('ticker-content');
+      if (tickerContent && localDB.announcements && localDB.announcements.tickerText) {
+        tickerContent.innerText = localDB.announcements.tickerText;
+      }
+
+      // 2. Banner warning melayang
+      const banner = document.getElementById('global-announcement');
+      const bannerText = document.getElementById('announcement-text');
+      if (banner && bannerText && localDB.announcements) {
+        bannerText.innerText = localDB.announcements.announcementText || "";
+        if (localDB.announcements.announcementActive) {
+          banner.classList.remove('d-none');
+        } else {
+          banner.classList.add('d-none');
+        }
+      }
+
+      // 3. Update logo dinas secara menyeluruh di semua komponen
+      const headerLogo = document.getElementById('header-logo-img');
+      const loginLogo = document.getElementById('login-logo-img');
+      const defaultLogo = "https://img.icons8.com/color/96/government-building.png";
+      const currentLogo = localDB.kopSurat.logoUrl || defaultLogo;
+
+      if (headerLogo) headerLogo.src = currentLogo;
+      if (loginLogo) loginLogo.src = currentLogo;
+
+      // 4. Sinkronisasi input form Admin Settings
+      const setTickerText = document.getElementById('set-ticker-text');
+      const setAnnounceText = document.getElementById('set-announcement-text');
+      const setAnnounceActive = document.getElementById('set-announcement-active');
+      
+      if (setTickerText) setTickerText.value = localDB.announcements.tickerText || "";
+      if (setAnnounceText) setAnnounceText.value = localDB.announcements.announcementText || "";
+      if (setAnnounceActive) setAnnounceActive.checked = !!localDB.announcements.announcementActive;
+
+      const kopOrgMain = document.getElementById('kop-org-main');
+      const kopOrgSub = document.getElementById('kop-org-sub');
+      const kopAlamat = document.getElementById('kop-alamat');
+      const kopLogoUrl = document.getElementById('kop-logo-url');
+
+      if (kopOrgMain) kopOrgMain.value = localDB.kopSurat.orgMain || "";
+      if (kopOrgSub) kopOrgSub.value = localDB.kopSurat.orgSub || "";
+      if (kopAlamat) kopAlamat.value = localDB.kopSurat.alamat || "";
+      if (kopLogoUrl) kopLogoUrl.value = localDB.kopSurat.logoUrl || "";
+
+      // 5. Hub integrasi Google Drive (Penyelamat refresh)
+      const setGasUrl = document.getElementById('set-gas-url');
+      const setGDriveEnabled = document.getElementById('set-gdrive-enabled');
+      const dbStatusBadge = document.getElementById('db-status-badge');
+
+      if (setGasUrl && localDB.gdriveSettings) {
+        setGasUrl.value = localDB.gdriveSettings.gasUrl || "";
+        setGDriveEnabled.checked = !!localDB.gdriveSettings.enabled;
+
+        // Bersihkan data statis sisa, ganti dengan indikator murni dinamis (Mengatasi bug ikon ganda)
+        if (localDB.gdriveSettings.enabled && localDB.gdriveSettings.gasUrl !== "") {
+          dbStatusBadge.innerHTML = '<i class="fa-brands fa-google-drive text-success me-1"></i> Google Drive Cloud';
+        } else {
+          dbStatusBadge.innerHTML = '<i class="fa-solid fa-cloud text-warning me-1"></i> Integrasi Offline/Lokal';
+        }
+      }
+    }
+
+    function hideGlobalAnnouncement() {
+      const banner = document.getElementById('global-announcement');
+      if (banner) banner.classList.add('d-none');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      autoSetupDatabase();
+      registerServiceWorker();
+      applySettingsAndMetadata();
+      renderPublicFormsGrid();
+      updateDashboardSummary();
+      startSystemTimers();
+    });
+
+    function navigateTo(sectionId) {
+      document.querySelectorAll('.app-section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) targetSection.classList.add('active');
+
+      document.querySelectorAll('.nav-link-horizontal').forEach(link => link.classList.remove('active'));
+      document.querySelectorAll('.mobile-nav-item').forEach(item => item.classList.remove('active'));
+
+      if (sectionId === 'page-home') {
+        document.getElementById('m-nav-home')?.classList.add('active');
+        document.getElementById('nav-home-btn')?.classList.add('active');
+      } else if (sectionId === 'page-dashboard') {
+        if (!localDB.activeUser) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Akses Ditolak',
+            text: 'Silakan login terlebih dahulu untuk mengakses Dashboard Administrasi.',
+            confirmButtonColor: '#002B49'
+          });
+          navigateTo('page-login');
+          return;
+        }
+        document.getElementById('m-nav-dashboard')?.classList.add('active');
+        document.getElementById('nav-dashboard-btn')?.classList.add('active');
+        loadAdminFormsTable();
+        updateDashboardSummary();
+      } else if (sectionId === 'page-login') {
+        document.getElementById('m-nav-login')?.classList.add('active');
+        document.getElementById('nav-login-btn')?.classList.add('active');
+      }
+    }
+
+    function renderPublicFormsGrid() {
+      const grid = document.getElementById('public-forms-grid');
+      grid.innerHTML = '';
+
+      if (localDB.forms.length === 0) {
+        grid.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">Tidak ada pendaftaran yang aktif saat ini.</h5></div>`;
+        return;
+      }
+
+      localDB.forms.forEach(form => {
+        const remainingTime = new Date(form.deadline) - new Date();
+        const isClosed = remainingTime <= 0;
+        const totalSubmissions = localDB.submissions.filter(s => s.formId === form.id).length;
+
+        let categoryColor = 'bg-primary';
+        if (form.category === 'GURU') categoryColor = 'bg-primary';
+        if (form.category === 'SEKOLAH') categoryColor = 'bg-success';
+        if (form.category === 'SISWA') categoryColor = 'bg-warning text-dark';
+
+        const hasGDrive = form.gDriveFolderId ? '<i class="fa-brands fa-google-drive text-success ms-2" title="Terkoneksi Folder Google Drive"></i>' : '';
+
+        const cardHtml = `
+          <div class="col-md-6 col-lg-4 public-form-card" data-category="${form.category}" data-title="${form.title.toLowerCase()}">
+            <div class="glass-card p-4 h-100 d-flex flex-column bg-white">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <span class="badge ${categoryColor}">${form.category}</span>
+                <span class="badge ${isClosed ? 'bg-secondary' : 'bg-success'}">${isClosed ? 'DITUTUP' : 'AKTIF'}</span>
+              </div>
+              <h5 class="fw-bold text-navy mb-2">${form.title} ${hasGDrive}</h5>
+              <p class="text-muted small flex-grow-1">${form.desc}</p>
+              
+              <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                <span class="small text-muted"><i class="fa-solid fa-folder-closed me-1"></i> ${totalSubmissions} Berkas</span>
+                <div class="countdown-pill ${isClosed ? 'bg-secondary' : 'bg-danger'} text-white" id="countdown-timer-${form.id}" data-deadline="${form.deadline}">
+                  ${isClosed ? 'Sudah Ditutup' : 'Calculating...'}
+                </div>
+              </div>
+              <button class="btn btn-navy btn-sm w-100 py-2 fw-bold" onclick="showFormFillPortal('${form.id}')" ${isClosed ? 'disabled' : ''}>
+                <i class="fa-solid fa-file-pen me-2"></i> ${isClosed ? 'Pendaftaran Ditutup' : 'Isi Formulir'}
+              </button>
+            </div>
+          </div>
+        `;
+        grid.innerHTML += cardHtml;
+      });
+
+      document.getElementById('stat-active-forms').innerText = localDB.forms.filter(f => new Date(f.deadline) > new Date()).length;
+      document.getElementById('stat-total-submissions').innerText = localDB.submissions.length;
+    }
+
+    function filterPublicForms() {
+      const q = document.getElementById('public-search-form').value.toLowerCase();
+      document.querySelectorAll('.public-form-card').forEach(card => {
+        const title = card.getAttribute('data-title');
+        card.style.display = title.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    function filterCategory(cat) {
+      document.querySelectorAll('#category-tabs .nav-link').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`#category-tabs button[data-category="${cat}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.querySelectorAll('.public-form-card').forEach(card => {
+        const category = card.getAttribute('data-category');
+        card.style.display = (cat === 'SEMUA' || category === cat) ? 'block' : 'none';
+      });
+    }
+
+    function startSystemTimers() {
+      setInterval(() => {
+        const now = new Date();
+        document.querySelectorAll('[id^="countdown-timer-"]').forEach(pill => {
+          const deadlineStr = pill.getAttribute('data-deadline');
+          if (!deadlineStr) return;
+          
+          const deadline = new Date(deadlineStr);
+          const diff = deadline - now;
+
+          if (diff <= 0) {
+            pill.className = "countdown-pill bg-secondary text-white";
+            pill.innerText = "Sudah Ditutup";
+            
+            const activeFormId = document.getElementById('form-responder-id').value;
+            const targetPill = document.getElementById('form-fill-timer-value');
+            if (activeFormId && targetPill) {
+              const activeForm = localDB.forms.find(f => f.id === activeFormId);
+              if (activeForm && new Date(activeForm.deadline) - new Date() <= 0) {
+                targetPill.innerText = "Selesai (Form Ditutup)";
+                document.getElementById('btn-submit-form').disabled = true;
+              }
+            }
+          } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            let timerText = "";
+            if (days > 0) timerText += `${days}h `;
+            timerText += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            pill.innerText = timerText;
+          }
+        });
+      }, 1000);
+    }
+
+    function generateKopHTML() {
+      const currentLogo = localDB.kopSurat.logoUrl || "https://img.icons8.com/color/96/government-building.png";
+      return `
+        <div class="kop-container text-center d-flex align-items-center justify-content-center gap-4">
+          <img src="${currentLogo}" alt="Logo Kop" style="width: 75px; height: 75px; object-fit: contain;" onerror="this.onerror=null; this.src='https://placehold.co/96x96/002B49/FFFFFF?text=DISDIK';">
+          <div>
+            <div class="kop-title-huge">${localDB.kopSurat.orgMain}</div>
+            <div class="kop-title-large">${localDB.kopSurat.orgSub}</div>
+            <div class="kop-subtitle">${localDB.kopSurat.alamat}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function showFormFillPortal(formId) {
+      const form = localDB.forms.find(f => f.id === formId);
+      if (!form) return;
+
+      document.getElementById('form-responder-id').value = form.id;
+      document.getElementById('form-fill-title').innerText = form.title;
+      document.getElementById('form-fill-desc').innerText = form.desc;
+      
+      document.getElementById('form-kop-preview').innerHTML = generateKopHTML();
+
+      const countdownContainer = document.getElementById('form-fill-timer');
+      const countdownVal = document.getElementById('form-fill-timer-value');
+      countdownContainer.className = "countdown-pill bg-danger text-white";
+      countdownVal.innerText = "Loading...";
+
+      const pillRef = document.createElement('div');
+      pillRef.id = `countdown-timer-${form.id}`;
+      pillRef.setAttribute('data-deadline', form.deadline);
+      document.body.appendChild(pillRef);
+
+      const syncInterval = setInterval(() => {
+        const liveText = document.getElementById(`countdown-timer-${form.id}`);
+        if (liveText) {
+          countdownVal.innerText = liveText.innerText;
+          if (liveText.innerText === "Sudah Ditutup") {
+            document.getElementById('btn-submit-form').disabled = true;
+            clearInterval(syncInterval);
+          } else {
+            document.getElementById('btn-submit-form').disabled = false;
+          }
+        }
+      }, 1000);
+
+      const canvas = document.getElementById('form-render-canvas');
+      canvas.innerHTML = '';
+
+      form.fields.forEach(field => {
+        const colWidth = field.width || 12;
+        const requiredMark = field.required ? '<span class="text-danger">*</span>' : '';
+        const requiredAttr = field.required ? 'required' : '';
+        
+        let inputHtml = '';
+        if (field.type === 'text') {
+          inputHtml = `<input type="text" id="resp-${field.id}" class="form-control" ${requiredAttr} placeholder="Masukkan jawaban Anda...">`;
+        } else if (field.type === 'textarea') {
+          inputHtml = `<textarea id="resp-${field.id}" class="form-control" rows="3" ${requiredAttr} placeholder="Masukkan deskripsi lengkap..."></textarea>`;
+        } else if (field.type === 'number') {
+          inputHtml = `<input type="number" id="resp-${field.id}" class="form-control" ${requiredAttr} placeholder="Masukkan angka/ID resmi...">`;
+        } else if (field.type === 'date') {
+          inputHtml = `<input type="date" id="resp-${field.id}" class="form-control" ${requiredAttr}>`;
+        } else if (field.type === 'dropdown') {
+          const opts = field.options ? field.options.split(',') : ['Default'];
+          let optTags = opts.map(o => `<option value="${o}">${o}</option>`).join('');
+          inputHtml = `
+            <select id="resp-${field.id}" class="form-select" ${requiredAttr}>
+              <option value="" disabled selected>Pilih salah satu...</option>
+              ${optTags}
+            </select>
+          `;
+        } else if (field.type === 'file') {
+          inputHtml = `
+            <input type="file" id="resp-${field.id}" class="form-control" ${requiredAttr} onchange="validateUploadedFile(this)">
+            <small class="text-muted d-block mt-1">Hanya mendukung berkas (.pdf, .doc, .png, .jpg) maks 5MB.</small>
+          `;
+        }
+
+        const wrapperHtml = `
+          <div class="col-md-${colWidth} text-start">
+            <label class="form-label fw-bold text-navy mb-1">${field.label} ${requiredMark}</label>
+            ${inputHtml}
+          </div>
+        `;
+        canvas.innerHTML += wrapperHtml;
+      });
+
+      navigateTo('page-form-view');
+    }
+
+    function validateUploadedFile(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/png', 'image/jpeg'];
+      const maxBytes = 5 * 1024 * 1024; // 5 MB
+
+      if (!allowedTypes.includes(file.type)) {
+        Swal.fire('Format Tidak Didukung', 'Harap unggah file PDF, DOCX, JPG atau PNG.', 'error');
+        input.value = '';
+        return;
+      }
+
+      if (file.size > maxBytes) {
+        Swal.fire('File Terlalu Besar', 'Maksimum ukuran berkas unggahan adalah 5 MB.', 'error');
+        input.value = '';
+        return;
+      }
+    }
+
+    function uploadFileToGDrive(file, folderId) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          const rawBase64 = reader.result.split(',')[1];
+          const payload = {
+            action: "uploadFile",
+            folderId: folderId,
+            fileName: file.name,
+            contentType: file.type,
+            fileBase64: rawBase64
+          };
+
+          fetch(localDB.gdriveSettings.gasUrl, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(res => res.json())
+          .then(data => resolve(data))
+          .catch(err => reject(err));
+        };
+        reader.onerror = function (error) {
+          reject(error);
+        };
+      });
+    }
+
+    async function handleResponderSubmit(e) {
+      e.preventDefault();
+
+      const formId = document.getElementById('form-responder-id').value;
+      const form = localDB.forms.find(f => f.id === formId);
+      if (!form) return;
+
+      const remainingTime = new Date(form.deadline) - new Date();
+      if (remainingTime <= 0) {
+        Swal.fire('Pendaftaran Ditutup', 'Maaf, waktu untuk pengumpulan formulir ini sudah berakhir.', 'error');
+        return;
+      }
+
+      Swal.fire({
+        title: 'Memproses Tanggapan...',
+        text: 'Sedang menyimpan tanggapan Anda dan mengunggah berkas pendukung.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      const answers = {};
+      let firstResponderVal = '';
+
+      try {
+        for (let i = 0; i < form.fields.length; i++) {
+          const field = form.fields[i];
+          const inputEl = document.getElementById(`resp-${field.id}`);
+          if (!inputEl) continue;
+
+          if (field.type === 'file') {
+            const file = inputEl.files[0];
+            if (file) {
+              if (localDB.gdriveSettings && localDB.gdriveSettings.enabled && localDB.gdriveSettings.gasUrl && form.gDriveFolderId) {
+                const uploadResult = await uploadFileToGDrive(file, form.gDriveFolderId);
+                if (uploadResult && uploadResult.status === 'success') {
+                  answers[field.id] = uploadResult.fileUrl;
+                } else {
+                  throw new Error(uploadResult.message || "Gagal mengunggah file ke Google Drive.");
+                }
+              } else {
+                answers[field.id] = file.name + " (Penyimpanan Lokal)";
+              }
+            } else {
+              answers[field.id] = "tidak_ada_file.pdf";
+            }
+          } else {
+            answers[field.id] = inputEl.value;
+          }
+
+          if (i === 0) firstResponderVal = answers[field.id];
+        }
+
+        const subId = "REG-" + Math.floor(100000 + Math.random() * 900000);
+        const newSubmission = {
+          id: subId,
+          formId: form.id,
+          formTitle: form.title,
+          timestamp: new Date().toISOString(),
+          responderName: firstResponderVal || "Responden Umum",
+          status: "PENDING",
+          answers: answers
+        };
+
+        localDB.submissions.push(newSubmission);
+        saveToLocalStorage();
+
+        Swal.close();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Berkas Terkirim!',
+          text: 'Data Anda telah berhasil tersimpan dalam sistem arsip digital Dinas Pendidikan.',
+          showCancelButton: true,
+          confirmButtonColor: '#002B49',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: '<i class="fa-solid fa-download me-1"></i> Unduh Bukti PDF',
+          cancelButtonText: 'Selesai'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            printReceiptPDF(newSubmission.id);
+          }
+          navigateTo('page-home');
+          renderPublicFormsGrid();
+        });
+
+      } catch (err) {
+        Swal.close();
+        Swal.fire('Proses Pengiriman Gagal', 'Terjadi kesalahan sistem: ' + err.message, 'error');
+      }
+    }
+
+    function printReceiptPDF(submissionId) {
+      const sub = localDB.submissions.find(s => s.id === submissionId);
+      if (!sub) return;
+
+      const form = localDB.forms.find(f => f.id === sub.formId);
+      if (!form) return;
+
+      document.getElementById('print-kop').innerHTML = generateKopHTML();
+      document.getElementById('print-id-registrasi').innerText = sub.id;
+      document.getElementById('print-tanggal-ttd').innerText = `Kota Batam, ${new Date(sub.timestamp).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}`;
+
+      const printBodyTable = document.getElementById('print-fields-table');
+      printBodyTable.innerHTML = '';
+
+      form.fields.forEach(field => {
+        const answerVal = sub.answers[field.id] || '-';
+        let displayVal = answerVal;
+        
+        if (typeof answerVal === 'string' && answerVal.startsWith('http')) {
+          displayVal = `<a href="${answerVal}" target="_blank" style="color:#002B49; font-weight:bold;">Lihat di Google Drive</a>`;
+        }
+
+        printBodyTable.innerHTML += `
+          <tr>
+            <td class="fw-bold text-navy" style="width: 35%; background-color: #f8f9fa;">${field.label}</td>
+            <td>${displayVal}</td>
+          </tr>
+        `;
+      });
+
+      const printArea = document.getElementById('print-area');
+      printArea.classList.remove('d-none');
+      window.print();
+      
+      setTimeout(() => {
+        printArea.classList.add('d-none');
+      }, 1000);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pw = document.getElementById('login-password').value;
+
+      if (email === "operator@disdik.go.id" && pw === "operator2026") {
+        localDB.activeUser = { email: email, role: "ADMIN" };
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Berhasil',
+          text: 'Selamat datang di panel administrasi E-Form Disdik Pro.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        navigateTo('page-dashboard');
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Autentikasi Gagal',
+          text: 'Email atau password salah! (Saran: operator@disdik.go.id / operator2026)',
+          confirmButtonColor: '#002B49'
+        });
+      }
+    }
+
+    function handleLogout() {
+      localDB.activeUser = null;
+      Swal.fire('Logged Out', 'Anda berhasil keluar dari sistem administrasi.', 'info');
+      navigateTo('page-home');
+    }
+
+    function updateDashboardSummary() {
+      document.getElementById('dash-kpi-forms').innerText = localDB.forms.length;
+      document.getElementById('dash-kpi-submissions').innerText = localDB.submissions.length;
+      document.getElementById('dash-kpi-approved').innerText = localDB.submissions.filter(s => s.status === 'VERIFIED').length;
+      document.getElementById('dash-kpi-pending').innerText = localDB.submissions.filter(s => s.status === 'PENDING').length;
+
+      const formFilterSelect = document.getElementById('filter-submission-form');
+      if (formFilterSelect) {
+        formFilterSelect.innerHTML = '<option value="ALL">Semua Formulir</option>';
+        localDB.forms.forEach(form => {
+          formFilterSelect.innerHTML += `<option value="${form.id}">${form.title}</option>`;
+        });
+      }
+    }
+
+    function loadAdminFormsTable() {
+      const tbody = document.getElementById('admin-forms-table-body');
+      tbody.innerHTML = '';
+
+      if (localDB.forms.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Belum ada formulir dibuat. Klik 'Buat Form Baru'.</td></tr>`;
+        return;
+      }
+
+      localDB.forms.forEach(form => {
+        const remainingTime = new Date(form.deadline) - new Date();
+        const isClosed = remainingTime <= 0;
+        const count = localDB.submissions.filter(s => s.formId === form.id).length;
+        
+        const gdriveIndicator = form.gDriveFolderId 
+          ? `<span class="badge bg-success-subtle text-success border border-success"><i class="fa-brands fa-google-drive me-1"></i> Aktif</span>`
+          : `<span class="badge bg-light text-muted border">Lokal</span>`;
+
+        const row = `
+          <tr>
+            <td>
+              <div class="fw-bold text-navy">${form.title}</div>
+              <small class="text-muted text-truncate d-inline-block" style="max-width: 250px;">${form.desc}</small>
+            </td>
+            <td><span class="badge bg-secondary">${form.category}</span></td>
+            <td><small class="fw-semibold text-danger">${new Date(form.deadline).toLocaleString('id-ID')}</small></td>
+            <td><span class="badge bg-navy">${count} Berkas</span></td>
+            <td>${gdriveIndicator}</td>
+            <td>
+              <span class="badge ${isClosed ? 'bg-danger' : 'bg-success'}">${isClosed ? 'Closed' : 'Published'}</span>
+            </td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" onclick="showFormFillPortal('${form.id}')" title="Preview Tampilan"><i class="fa-solid fa-eye"></i></button>
+                <button class="btn btn-outline-danger" onclick="deleteForm('${form.id}')" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function loadSubmissionsTable() {
+      const tbody = document.getElementById('admin-submissions-table-body');
+      tbody.innerHTML = '';
+
+      const filteredSubmissions = getFilteredSubmissionsList();
+
+      if (filteredSubmissions.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Tidak ada berkas yang cocok dengan filter.</td></tr>`;
+        return;
+      }
+
+      filteredSubmissions.forEach(sub => {
+        let statusBadge = 'bg-warning text-dark';
+        if (sub.status === 'VERIFIED') statusBadge = 'bg-success';
+        if (sub.status === 'REVISION') statusBadge = 'bg-info text-dark';
+        if (sub.status === 'REJECTED') statusBadge = 'bg-danger';
+
+        let fileAnswerUrl = '#';
+        let fileNameText = 'Unduh';
+        for (const [key, value] of Object.entries(sub.answers)) {
+          if (typeof value === 'string' && (value.startsWith('http') || value.includes('.pdf') || value.includes('.png') || value.includes('.jpg'))) {
+            fileAnswerUrl = value;
+            fileNameText = value.startsWith('http') ? 'Buka Google Drive' : value;
+            break;
+          }
+        }
+
+        const isGDriveUrl = fileAnswerUrl.startsWith('http');
+        const linkHtml = isGDriveUrl 
+          ? `<a href="${fileAnswerUrl}" target="_blank" class="small text-success fw-bold text-decoration-underline"><i class="fa-brands fa-google-drive me-1"></i> GDrive File</a>`
+          : `<a href="#" class="small text-royal text-decoration-underline" onclick="mockDownloadFile('${fileAnswerUrl}')"><i class="fa-solid fa-paperclip me-1"></i> ${fileNameText}</a>`;
+
+        const row = `
+          <tr>
+            <td><small class="text-muted">${new Date(sub.timestamp).toLocaleString('id-ID')}</small></td>
+            <td><div class="fw-bold text-navy">${sub.responderName}</div><small class="text-muted">ID: ${sub.id}</small></td>
+            <td><small class="fw-semibold">${sub.formTitle}</small></td>
+            <td>${linkHtml}</td>
+            <td><span class="badge ${statusBadge}">${sub.status}</span></td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-navy" onclick="showVerifyModal('${sub.id}')"><i class="fa-solid fa-circle-check me-1"></i> Verifikasi</button>
+                <button class="btn btn-outline-secondary" onclick="printReceiptPDF('${sub.id}')" title="Unduh Bukti"><i class="fa-solid fa-file-pdf"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function mockDownloadFile(filename) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Simulator File',
+        text: `Berkas "${filename}" tersimpan di basis data internal.`,
+        confirmButtonColor: '#002B49'
+      });
+    }
+
+    function getFilteredSubmissionsList() {
+      const selForm = document.getElementById('filter-submission-form').value;
+      const selStatus = document.getElementById('filter-submission-status').value;
+
+      return localDB.submissions.filter(s => {
+        const matchForm = (selForm === 'ALL' || s.formId === selForm);
+        const matchStatus = (selStatus === 'ALL' || s.status === selStatus);
+        return matchForm && matchStatus;
+      });
+    }
+
+    function filterSubmissions() {
+      loadSubmissionsTable();
+    }
+
+    function showVerifyModal(subId) {
+      const sub = localDB.submissions.find(s => s.id === subId);
+      if (!sub) return;
+
+      const form = localDB.forms.find(f => f.id === sub.formId);
+      if (!form) return;
+
+      const modalBody = document.getElementById('verification-modal-body');
+      modalBody.innerHTML = '';
+
+      let rowsHtml = '';
+      form.fields.forEach(field => {
+        const ans = sub.answers[field.id] || '-';
+        let previewVal = ans;
+        if (typeof ans === 'string' && ans.startsWith('http')) {
+          previewVal = `<a href="${ans}" target="_blank" class="btn btn-success btn-sm mt-1"><i class="fa-brands fa-google-drive me-2"></i>Lihat di Google Drive</a>`;
+        }
+        rowsHtml += `
+          <div class="mb-3">
+            <label class="fw-bold text-navy small mb-1">${field.label}</label>
+            <div class="p-2 bg-light border rounded small">${previewVal}</div>
+          </div>
+        `;
+      });
+
+      const verificationPanelHtml = `
+        <div class="row">
+          <div class="col-md-7 border-end">
+            <h6 class="fw-bold mb-3 text-navy"><i class="fa-solid fa-file-lines me-2"></i>Data Isian Responden</h6>
+            ${rowsHtml}
+          </div>
+          <div class="col-md-5">
+            <h6 class="fw-bold mb-3 text-navy"><i class="fa-solid fa-user-shield me-2"></i>Status Kelayakan Berkas</h6>
+            <div class="mb-4">
+              <label class="form-label small fw-semibold">Pilih Keputusan:</label>
+              <select id="verify-decision-select" class="form-select">
+                <option value="PENDING" ${sub.status === 'PENDING' ? 'selected' : ''}>Menunggu Keputusan</option>
+                <option value="VERIFIED" ${sub.status === 'VERIFIED' ? 'selected' : ''}>Terverifikasi Sesuai (Lolos)</option>
+                <option value="REVISION" ${sub.status === 'REVISION' ? 'selected' : ''}>Perlu Revisi (Data Kurang)</option>
+                <option value="REJECTED" ${sub.status === 'REJECTED' ? 'selected' : ''}>Ditolak (Salah Berkas)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Catatan Tim Penilai:</label>
+              <textarea id="verify-catatan" class="form-control" rows="4" placeholder="Tulis catatan jika memerlukan revisi atau ditolak..."></textarea>
+            </div>
+            <hr class="my-3">
+            <div class="d-grid">
+              <button class="btn btn-navy" onclick="saveSubmissionDecision('${sub.id}')">Simpan Hasil Verifikasi</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      modalBody.innerHTML = verificationPanelHtml;
+      const myModal = new bootstrap.Modal(document.getElementById('modalVerifySubmission'));
+      myModal.show();
+    }
+
+    function saveSubmissionDecision(subId) {
+      const selectVal = document.getElementById('verify-decision-select').value;
+      const sub = localDB.submissions.find(s => s.id === subId);
+
+      if (sub) {
+        sub.status = selectVal;
+        saveToLocalStorage();
+        updateDashboardSummary();
+        loadSubmissionsTable();
+        
+        const modalEl = document.getElementById('modalVerifySubmission');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) modalInstance.hide();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Verifikasi Tersimpan',
+          text: `Status berkas pendaftaran ${sub.responderName} diperbarui ke ${selectVal}.`,
+          confirmButtonColor: '#002B49'
+        });
+      }
+    }
+
+    let myTrendChart = null;
+    let myDoughnutChart = null;
+
+    function initDashboardAnalytics() {
+      const trendCtx = document.getElementById('chart-submissions-trend').getContext('2d');
+      if (myTrendChart) myTrendChart.destroy();
+
+      myTrendChart = new Chart(trendCtx, {
+        type: 'line',
+        data: {
+          labels: ['1 Juli', '5 Juli', '10 Juli', '15 Juli', '20 Juli'],
+          datasets: [{
+            label: 'Jumlah Pengajuan',
+            data: [0, 0, 0, 0, localDB.submissions.length],
+            borderColor: '#0D6EFD',
+            backgroundColor: 'rgba(13, 110, 253, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      const doughnutCtx = document.getElementById('chart-verification-doughnut').getContext('2d');
+      if (myDoughnutChart) myDoughnutChart.destroy();
+
+      const totalPending = localDB.submissions.filter(s => s.status === 'PENDING').length;
+      const totalApproved = localDB.submissions.filter(s => s.status === 'VERIFIED').length;
+      const totalRevision = localDB.submissions.filter(s => s.status === 'REVISION').length;
+      const totalRejected = localDB.submissions.filter(s => s.status === 'REJECTED').length;
+
+      myDoughnutChart = new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pending', 'Sesuai', 'Revisi', 'Ditolak'],
+          datasets: [{
+            data: [totalPending, totalApproved, totalRevision, totalRejected],
+            backgroundColor: ['#FD7E14', '#198754', '#0D6EFD', '#DC3545']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+
+    function exportSubmissionsToExcel() {
+      const filtered = getFilteredSubmissionsList();
+      if (filtered.length === 0) {
+        Swal.fire('Tidak Ada Data', 'Tidak ada baris data yang siap diekspor.', 'warning');
+        return;
+      }
+
+      let content = "Tanggal Masuk\tID Registrasi\tNama Responden\tFormulir\tStatus Verifikasi\n";
+      filtered.forEach(s => {
+        content += `${new Date(s.timestamp).toLocaleString('id-ID')}\t${s.id}\t${s.responderName}\t${s.formTitle}\t${s.status}\n`;
+      });
+
+      const blob = new Blob([content], { type: "application/vnd.ms-excel;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Rekap_Tanggapan_Disdik_${Date.now()}.xls`;
+      link.click();
+    }
+
+    function showFormBuilderModal() {
+      localDB.customFields = [];
+      document.getElementById('build-form-title').value = '';
+      document.getElementById('build-form-desc').value = '';
+      document.getElementById('build-form-deadline').value = '';
+      renderBuilderCanvas();
+
+      const myModal = new bootstrap.Modal(document.getElementById('modalFormBuilder'));
+      myModal.show();
+    }
+
+    function addNewField(type) {
+      const fieldId = "fld-" + Math.floor(1000 + Math.random() * 9000);
+      let defaultLabel = "Masukkan Label Input Anda";
+      let optionsStr = "";
+
+      if (type === 'text') defaultLabel = "Nama Lengkap";
+      if (type === 'number') defaultLabel = "Nomor ID / NIP / NISN";
+      if (type === 'dropdown') {
+        defaultLabel = "Pilih Opsi";
+        optionsStr = "Pilihan A,Pilihan B,Pilihan C";
+      }
+      if (type === 'file') defaultLabel = "Unggah Berkas Pendukung (PDF)";
+      if (type === 'date') defaultLabel = "Pilih Tanggal";
+
+      localDB.customFields.push({
+        id: fieldId,
+        type: type,
+        label: defaultLabel,
+        required: true,
+        width: 12,
+        options: optionsStr
+      });
+
+      renderBuilderCanvas();
+    }
+
+    function renderBuilderCanvas() {
+      const canvas = document.getElementById('builder-working-canvas');
+      const emptyState = document.getElementById('canvas-empty-state');
+
+      if (localDB.customFields.length === 0) {
+        emptyState.style.display = 'block';
+        Array.from(canvas.children).forEach(child => {
+          if (child.id !== 'canvas-empty-state') child.remove();
+        });
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      
+      Array.from(canvas.children).forEach(child => {
+        if (child.id !== 'canvas-empty-state') child.remove();
+      });
+
+      localDB.customFields.forEach((field, index) => {
+        const item = document.createElement('div');
+        item.className = "canvas-item";
+        
+        let subConfigHtml = '';
+        if (field.type === 'dropdown') {
+          subConfigHtml = `
+            <div class="mt-2">
+              <label class="form-label text-xs fw-semibold mb-0" style="font-size: 11px;">Opsi Dropdown (Pisahkan dengan Koma):</label>
+              <input type="text" class="form-control form-control-sm" value="${field.options}" onchange="updateFieldOptions(${index}, this.value)">
+            </div>
+          `;
+        }
+
+        item.innerHTML = `
+          <div class="row g-2 align-items-center">
+            <div class="col-md-5">
+              <label class="form-label text-xs mb-1" style="font-size: 11px; font-weight: bold; color: var(--color-primary);">Label Input:</label>
+              <input type="text" class="form-control form-control-sm fw-bold" value="${field.label}" onchange="updateFieldLabel(${index}, this.value)">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label text-xs mb-1" style="font-size: 11px;">Ukuran Grid (Lebar):</label>
+              <select class="form-select form-select-sm" onchange="updateFieldWidth(${index}, this.value)">
+                <option value="12" ${field.width == 12 ? 'selected' : ''}>Full Baris (100%)</option>
+                <option value="6" ${field.width == 6 ? 'selected' : ''}>Setengah Baris (50%)</option>
+                <option value="4" ${field.width == 4 ? 'selected' : ''}>Sepertiga Baris (33%)</option>
+                <option value="3" ${field.width == 3 ? 'selected' : ''}>Seperempat Baris (25%)</option>
+              </select>
+            </div>
+            <div class="col-md-2 form-check form-switch pt-3 text-start ps-4">
+              <input class="form-check-input" type="checkbox" role="switch" ${field.required ? 'checked' : ''} onchange="toggleFieldRequired(${index}, this.checked)">
+              <label class="form-check-label small fw-semibold">Wajib</label>
+            </div>
+          </div>
+          ${subConfigHtml}
+          <div class="canvas-actions">
+            <button class="btn btn-sm btn-light text-danger" onclick="removeField(${index})"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        `;
+        canvas.appendChild(item);
+      });
+    }
+
+    function updateFieldLabel(index, val) { localDB.customFields[index].label = val; }
+    function updateFieldWidth(index, val) { localDB.customFields[index].width = parseInt(val); }
+    function toggleFieldRequired(index, checked) { localDB.customFields[index].required = checked; }
+    function updateFieldOptions(index, val) { localDB.customFields[index].options = val; }
+    function removeField(index) {
+      localDB.customFields.splice(index, 1);
+      renderBuilderCanvas();
+    }
+
+    async function createGDriveFolder(folderName) {
+      if (!localDB.gdriveSettings || !localDB.gdriveSettings.gasUrl) return null;
+      try {
+        const payload = {
+          action: "createFolder",
+          folderName: folderName
+        };
+        const response = await fetch(localDB.gdriveSettings.gasUrl, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (result.status === "success") {
+          return result.folderId;
+        }
+      } catch (e) {
+        console.error("Gagal mendaftarkan folder ke Google Drive:", e);
+      }
+      return null;
+    }
+
+    async function saveBuiltForm() {
+      const title = document.getElementById('build-form-title').value;
+      const desc = document.getElementById('build-form-desc').value;
+      const deadline = document.getElementById('build-form-deadline').value;
+      const category = document.getElementById('build-form-category').value;
+
+      if (!title || !deadline) {
+        Swal.fire('Input Kurang', 'Harap lengkapi Judul Formulir dan Batas Tanggal Deadline.', 'warning');
+        return;
+      }
+
+      if (localDB.customFields.length === 0) {
+        Swal.fire('Canvas Kosong', 'Harap tambahkan setidaknya 1 elemen input ke dalam formulir.', 'warning');
+        return;
+      }
+
+      let gFolderId = null;
+      if (localDB.gdriveSettings && localDB.gdriveSettings.enabled && localDB.gdriveSettings.gasUrl !== "") {
+        Swal.fire({
+          title: 'Mendaftarkan Folder Google Drive...',
+          text: 'Harap tunggu, sedang mengotomatisasi pembuatan folder arsip di Google Drive.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        gFolderId = await createGDriveFolder(title);
+        Swal.close();
+      }
+
+      const formId = "form-" + Math.floor(1000 + Math.random() * 9000);
+      const newForm = {
+        id: formId,
+        title: title,
+        desc: desc,
+        category: category,
+        deadline: new Date(deadline).toISOString(),
+        gDriveFolderId: gFolderId,
+        fields: [...localDB.customFields]
+      };
+
+      localDB.forms.push(newForm);
+      saveToLocalStorage();
+
+      const modalEl = document.getElementById('modalFormBuilder');
+      const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      if (modalInstance) modalInstance.hide();
+
+      Swal.fire('Formulir Diterbitkan!', `Formulir "${title}" berhasil disematkan ${gFolderId ? 'ke Google Drive!' : 'pada database lokal.'}`, 'success');
+      navigateTo('page-dashboard');
+      renderPublicFormsGrid();
+      loadAdminFormsTable();
+    }
+
+    function deleteForm(id) {
+      Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: 'Menghapus formulir ini juga akan menghapus data berkas tanggapan di dalamnya!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#DC3545',
+        confirmButtonText: 'Hapus Permanen'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localDB.forms = localDB.forms.filter(f => f.id !== id);
+          localDB.submissions = localDB.submissions.filter(s => s.formId !== id);
+          saveToLocalStorage();
+          loadAdminFormsTable();
+          updateDashboardSummary();
+          renderPublicFormsGrid();
+          Swal.fire('Terhapus', 'Formulir berhasil dihapus.', 'success');
+        }
+      });
+    }
+
+    function saveKopSurat(e) {
+      e.preventDefault();
+      localDB.kopSurat.orgMain = document.getElementById('kop-org-main').value;
+      localDB.kopSurat.orgSub = document.getElementById('kop-org-sub').value;
+      localDB.kopSurat.alamat = document.getElementById('kop-alamat').value;
+      localDB.kopSurat.logoUrl = document.getElementById('kop-logo-url').value;
+
+      saveToLocalStorage();
+      applySettingsAndMetadata();
+      Swal.fire('Berhasil', 'Template Kop Surat Resmi Dinas berhasil diperbarui.', 'success');
+    }
+
+    function saveGlobalSettings(e) {
+      e.preventDefault();
+      localDB.announcements.tickerText = document.getElementById('set-ticker-text').value;
+      localDB.announcements.announcementText = document.getElementById('set-announcement-text').value;
+      localDB.announcements.announcementActive = document.getElementById('set-announcement-active').checked;
+
+      const setGasUrl = document.getElementById('set-gas-url').value;
+      const setGDriveEnabled = document.getElementById('set-gdrive-enabled').checked;
+      
+      localDB.gdriveSettings = {
+        enabled: setGDriveEnabled,
+        gasUrl: setGasUrl
+      };
+
+      saveToLocalStorage();
+      applySettingsAndMetadata();
+      Swal.fire('Berhasil', 'Seluruh konfigurasi sistem & integrasi Google Drive telah diperbarui.', 'success');
+    }
+  </script>
+</body>
+</html>
